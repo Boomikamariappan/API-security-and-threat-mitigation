@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prediction Results</title>
+  <style>
+    /* CSS Variables for easy customization */
+    :root {
+      --primary-color: #4ecca3;
+      --primary-hover: #3ab58c;
+      --bg-dark: #1a1a2e;
+      --bg-darker: #16213e;
+      --container-bg: rgba(0, 0, 0, 0.8);
+      --transition-speed: 0.3s;
+    }
+
+    /* Reset Defaults */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--bg-dark), var(--bg-darker), var(--bg-dark));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #fff;
+      padding: 1rem;
+      position: relative;
+    }
+
+    /* Floating Particles Background */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      background: var(--primary-color);
+      border-radius: 50%;
+      opacity: 0.3;
+    }
+
+    /* Updated Rectangular Container */
+    .container {
+      background: var(--container-bg);
+      /* Gradient border */
+      border: 4px solid transparent;
+      border-image: linear-gradient(45deg, var(--primary-color), var(--primary-hover)) 1;
+      border-radius: 0;
+      padding: 2rem;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+      width: 90%;
+      max-width: 700px;
+      animation: fadeInUp 0.5s ease-in-out;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 10px var(--primary-color);
+    }
+
+    /* Two-Column Grid for Input Features */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.75rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      color: #ddd;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Styling for Attack Type */
+    .attack-type {
+      background: var(--primary-color);
+      color: var(--bg-dark);
+      font-size: 1.2rem;
+      font-weight: bold;
+      padding: 0.75rem;
+      border-radius: 4px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(78, 204, 163, 0.4);
+    }
+
+    .description {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.75rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      color: #ddd;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Back Button */
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.5rem;
+      padding: 0.75rem;
+      background: var(--primary-color);
+      color: var(--bg-dark);
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    }
+
+    .back-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(78, 204, 163, 0.4);
+    }
+
+    /* Fade-in Animation */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      .container {
+        padding: 1.5rem;
+      }
+      .features-grid {
+        grid-template-columns: 1fr; /* Stack on small screens */
+      }
+      h1 {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating Particles Background -->
+  <div class="particles"></div>
+
+  <div class="container">
+    <h1>Prediction Results</h1>
+
+    <h2>Input Features:</h2>
+    <div class="features-grid">
+      {% for key, value in input_features.items() %}
+      <div class="feature-item"><strong>{{ key }}:</strong> {{ value }}</div>
+      {% endfor %}
+    </div>
+
+    <h2>Predicted Attack Type:</h2>
+    <p class="attack-type">{{ predicted_attack }}</p>
+
+    <h2>Description:</h2>
+    <p class="description">{{ description }}</p>
+
+    <a href="/" class="back-link">Go Back</a>
+  </div>
+
+  <script>
+    // Floating Particles Effect
+    function createParticles() {
+      const particlesContainer = document.querySelector('.particles');
+      const particleCount = 50;
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        const size = Math.random() * 4 + 2;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        particlesContainer.appendChild(particle);
+        animateParticle(particle);
+      }
+    }
+
+    function animateParticle(particle) {
+      const duration = Math.random() * 3000 + 2000;
+      const targetX = Math.random() * 200 - 100;
+      const targetY = Math.random() * 200 - 100;
+      particle.animate([
+        { transform: 'translate(0, 0)' },
+        { transform: `translate(${targetX}px, ${targetY}px)` }
+      ], {
+        duration: duration,
+        iterations: Infinity,
+        direction: 'alternate',
+        easing: 'ease-in-out'
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', createParticles);
+  </script>
+</body>
+</html>

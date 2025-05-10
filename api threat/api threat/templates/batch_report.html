@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batch Prediction Report</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #1a1a2e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #4ecca3;
+            text-shadow: 0 0 10px rgba(78, 204, 163, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #eeeeee;
+            opacity: 0.9;
+        }
+
+        .nav-bar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .nav-bar a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border-radius: 20px;
+            transition: background 0.3s;
+        }
+
+        .nav-bar a:hover {
+            background: rgba(78, 204, 163, 0.3);
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s ease;
+        }
+
+        .info-card h2 {
+            color: #4ecca3;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .info-card h3 {
+            color: #4ecca3;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: #4ecca3;
+            color: #1a1a2e;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(78, 204, 163, 0.3);
+        }
+
+        .flash-message {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .flash-success {
+            background: rgba(78, 204, 163, 0.3);
+        }
+
+        .flash-danger {
+            background: rgba(255, 0, 0, 0.3);
+        }
+
+        .flash-warning {
+            background: rgba(255, 165, 0, 0.3);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(78, 204, 163, 0.3);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        td {
+            color: #eeeeee;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .error-list {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .error-list li {
+            color: #ff6666;
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+            white-space: pre-wrap;
+            color: #eeeeee;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: #4ecca3;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles"></div>
+    <div class="container">
+        <div class="nav-bar">
+            <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="{{ url_for('index') }}"><i class="fas fa-chart-line"></i> Analyze</a>
+            <a href="{{ url_for('report') }}"><i class="fas fa-file-alt"></i> Single Report</a>
+            <a href="{{ url_for('batch_report') }}"><i class="fas fa-folder-open"></i> Batch Report</a>
+            <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+
+        <div class="header">
+            <h1><i class="fas fa-folder-open"></i> Batch Prediction Report</h1>
+            <p>View the results of your batch network traffic analysis.</p>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ 'success' if category == 'success' else 'danger' if category == 'danger' else 'warning' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Errors -->
+        {% if errors %}
+            <div class="info-card">
+                <h2><i class="fas fa-exclamation-triangle"></i> Errors</h2>
+                <ul class="error-list">
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <!-- Predictions -->
+        <div class="info-card">
+            <h2><i class="fas fa-shield-alt"></i> Predictions</h2>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>#</th>
+                        <th>Attack Type</th>
+                        <th>Timestamp</th>
+                        <th>Source IP</th>
+                        <th>Dest IP</th>
+                        <th>Source Port</th>
+                        <th>Dest Port</th>
+                        <th>Protocol</th>
+                        <th>Packets</th>
+                        <th>Bytes</th>
+                        <th>Duration</th>
+                    </tr>
+                    {% for pred in results %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ pred.predicted_attack }}</td>
+                            <td>{{ pred.input_features.timestamp }}</td>
+                            <td>{{ pred.input_features.source_ip }}</td>
+                            <td>{{ pred.input_features.dest_ip }}</td>
+                            <td>{{ pred.input_features.source_port }}</td>
+                            <td>{{ pred.input_features.dest_port }}</td>
+                            <td>{{ pred.input_features.protocol }}</td>
+                            <td>{{ pred.input_features.packet_count }}</td>
+                            <td>{{ pred.input_features.byte_count }}</td>
+                            <td>{{ pred.input_features.duration }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Back to Upload
+            </a>
+        </div>
+
+        <!-- Analysis -->
+        <div class="info-card">
+            <h2><i class="fas fa-chart-bar"></i> Analysis</h2>
+            {% for attack, desc in descriptions.items() %}
+                <h3>{{ attack }}</h3>
+                <pre>{{ desc }}</pre>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles effect
+        function createParticles() {
+            const particlesContainer = document.querySelector('.particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size between 2 and 6 pixels
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                particlesContainer.appendChild(particle);
+                
+                // Animate particle
+                animateParticle(particle);
+            }
+        }
+
+        function animateParticle(particle) {
+            const duration = Math.random() * 3000 + 2000; // 2-5 seconds
+            const targetX = Math.random() * 200 - 100; // -100 to 100
+            const targetY = Math.random() * 200 - 100; // -100 to 100
+
+            particle.animate([
+                { transform: 'translate(0, 0)' },
+                { transform: `translate(${targetX}px, ${targetY}px)` }
+            ], {
+                duration: duration,
+                iterations: Infinity,
+                direction: 'alternate',
+                easing: 'ease-in-out'
+            });
+        }
+
+        // Initialize particles on load
+        document.addEventListener('DOMContentLoaded', createParticles);
+
+        // Add hover effects for buttons
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('mouseover', () => {
+                button.style.transform = 'translateY(-3px)';
+                button.style.boxShadow = '0 5px 15px rgba(78, 204, 163, 0.3)';
+            });
+
+            button.addEventListener('mouseout', () => {
+                button.style.transform = 'translateY(0)';
+                button.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

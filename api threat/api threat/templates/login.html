@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <!-- Bootstrap CSS (for basic grid and form styling) -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #1a1a2e, #16213e, #1a1a2e);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .particle {
+      position: absolute;
+      background: #4ecca3;
+      border-radius: 50%;
+      opacity: 0.3;
+    }
+    .container {
+      width: 90%;
+      max-width: 500px;
+      margin-top: 80px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      animation: fadeInUp 1s ease;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #4ecca3;
+      text-shadow: 0 0 10px rgba(78, 204, 163, 0.3);
+      text-align: center;
+    }
+    label {
+      font-weight: bold;
+    }
+    .form-control {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+    }
+    .btn-primary {
+      background: #4ecca3;
+      border: none;
+      color: #1a1a2e;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(78, 204, 163, 0.3);
+    }
+    .btn-link {
+      color: #4ecca3;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Particles Background -->
+  <div class="particles"></div>
+  
+  <div class="container">
+    <h1><i class="fas fa-sign-in-alt"></i> Login</h1>
+    <form method="POST">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          id="username" 
+          name="username" 
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          class="form-control" 
+          id="password" 
+          name="password" 
+          required
+        >
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+    <div class="text-center mt-3">
+      <a href="{{ url_for('landing') }}" class="btn btn-link">
+        <i class="fas fa-arrow-left"></i> Back to Landing Page
+      </a>
+    </div>
+  </div>
+
+  <!-- jQuery and Bootstrap JS (optional, for additional functionality) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    // Create floating particles effect
+    function createParticles() {
+      const particlesContainer = document.querySelector('.particles');
+      const particleCount = 50;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // Random size between 2 and 6 pixels
+        const size = Math.random() * 4 + 2;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random position
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        particlesContainer.appendChild(particle);
+        
+        // Animate particle
+        animateParticle(particle);
+      }
+    }
+
+    function animateParticle(particle) {
+      const duration = Math.random() * 3000 + 2000; // 2-5 seconds
+      const targetX = Math.random() * 200 - 100; // -100 to 100
+      const targetY = Math.random() * 200 - 100; // -100 to 100
+      
+      particle.animate([
+        { transform: 'translate(0, 0)' },
+        { transform: `translate(${targetX}px, ${targetY}px)` }
+      ], {
+        duration: duration,
+        iterations: Infinity,
+        direction: 'alternate',
+        easing: 'ease-in-out'
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', createParticles);
+  </script>
+</body>
+</html>

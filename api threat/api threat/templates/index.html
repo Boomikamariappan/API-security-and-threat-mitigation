@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyze API THREAST</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #1a1a2e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #4ecca3;
+            text-shadow: 0 0 10px rgba(78, 204, 163, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #eeeeee;
+            opacity: 0.9;
+        }
+
+        .nav-bar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .nav-bar a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border-radius: 20px;
+            transition: background 0.3s;
+        }
+
+        .nav-bar a:hover {
+            background: rgba(78, 204, 163, 0.3);
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s ease;
+        }
+
+        .info-card h2 {
+            color: #4ecca3;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 1rem;
+            color: #eeeeee;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: 1px solid #555;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4ecca3;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: #4ecca3;
+            color: #1a1a2e;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(78, 204, 163, 0.3);
+        }
+
+        .flash-message {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .flash-success {
+            background: rgba(78, 204, 163, 0.3);
+        }
+
+        .flash-danger {
+            background: rgba(255, 0, 0, 0.3);
+        }
+
+        .flash-warning {
+            background: rgba(255, 165, 0, 0.3);
+        }
+
+        /* Flatpickr Custom Styles */
+        .flatpickr-calendar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid #555;
+            color: #fff;
+        }
+
+        .flatpickr-day {
+            color: #fff;
+        }
+
+        .flatpickr-day:hover,
+        .flatpickr-day:focus {
+            background: rgba(78, 204, 163, 0.3);
+        }
+
+        .flatpickr-day.selected {
+            background: #4ecca3;
+            border-color: #4ecca3;
+        }
+
+        .flatpickr-month,
+        .flatpickr-weekdays {
+            background: transparent;
+            color: #fff;
+        }
+
+        .flatpickr-current-month .flatpickr-monthDropdown-months,
+        .flatpickr-current-month input.cur-year {
+            color: #fff;
+            background: transparent;
+        }
+
+        .flatpickr-time input {
+            color: #fff;
+            background: transparent;
+            border: 1px solid #555;
+        }
+
+        .flatpickr-time input:focus {
+            border-color: #4ecca3;
+        }
+
+        .flatpickr-time .numInputWrapper span.arrowUp:after,
+        .flatpickr-time .numInputWrapper span.arrowDown:after {
+            border-bottom-color: #fff;
+            border-top-color: #fff;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: #4ecca3;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles"></div>
+    <div class="container">
+        <div class="nav-bar">
+            <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="{{ url_for('index') }}"><i class="fas fa-chart-line"></i> Analyze</a>
+            <a href="{{ url_for('report') }}"><i class="fas fa-file-alt"></i> Single Report</a>
+            <a href="{{ url_for('batch_report') }}"><i class="fas fa-folder-open"></i> Batch Report</a>
+            <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+
+        <div class="header">
+            <h1><i class="fas fa-chart-line"></i> Analyze Network API Traffic</h1>
+            <p>Enter network traffic details or upload a CSV file to predict potential attacks.</p>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ 'success' if category == 'success' else 'danger' if category == 'danger' else 'warning' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Single Prediction Form -->
+        <div class="info-card">
+            <h2><i class="fas fa-exclamation-circle"></i> Single Prediction</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="timestamp"><i class="fas fa-clock"></i> Timestamp (YYYY-MM-DD HH:MM:SS)</label>
+                    <input type="text" id="timestamp" name="timestamp" placeholder="e.g., 2023-10-01 12:00:00" class="flatpickr" required>
+                </div>
+                <div class="form-group">
+                    <label for="source_ip"><i class="fas fa-network-wired"></i> Source IP</label>
+                    <input type="text" id="source_ip" name="source_ip" placeholder="e.g., 192.168.1.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="dest_ip"><i class="fas fa-network-wired"></i> Destination IP</label>
+                    <input type="text" id="dest_ip" name="dest_ip" placeholder="e.g., 10.0.0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="source_port"><i class="fas fa-plug"></i> Source Port</label>
+                    <input type="number" id="source_port" name="source_port" placeholder="e.g., 8080" required>
+                </div>
+                <div class="form-group">
+                    <label for="dest_port"><i class="fas fa-plug"></i> Destination Port</label>
+                    <input type="number" id="dest_port" name="dest_port" placeholder="e.g., 80" required>
+                </div>
+                <div class="form-group">
+                    <label for="protocol"><i class="fas fa-cogs"></i> Protocol</label>
+                    <select id="protocol" name="protocol" required>
+                        <option value="TCP">TCP</option>
+                        <option value="UDP">UDP</option>
+                        <option value="ICMP">ICMP</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="packet_count"><i class="fas fa-boxes"></i> Packet Count</label>
+                    <input type="number" id="packet_count" name="packet_count" placeholder="e.g., 100" required>
+                </div>
+                <div class="form-group">
+                    <label for="byte_count"><i class="fas fa-database"></i> Byte Count</label>
+                    <input type="number" id="byte_count" name="byte_count" placeholder="e.g., 1000" required>
+                </div>
+                <div class="form-group">
+                    <label for="duration"><i class="fas fa-hourglass"></i> Duration (seconds)</label>
+                    <input type="number" id="duration" name="duration" placeholder="e.g., 10" step="0.01" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Analyze
+                </button>
+            </form>
+        </div>
+
+        <!-- Batch Prediction Form -->
+        <div class="info-card">
+            <h2><i class="fas fa-folder"></i> Batch Prediction</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="file"><i class="fas fa-upload"></i> Upload CSV File</label>
+                    <input type="file" id="file" name="file" accept=".csv">
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-upload"></i> Upload and Analyze
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // Initialize Flatpickr for timestamp field
+        flatpickr("#timestamp", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i:S",
+            time_24hr: true,
+            defaultDate: new Date(),
+            placeholder: "e.g., 2023-10-01 12:00:00"
+        });
+
+        // Create floating particles effect
+        function createParticles() {
+            const particlesContainer = document.querySelector('.particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size between 2 and 6 pixels
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                particlesContainer.appendChild(particle);
+                
+                // Animate particle
+                animateParticle(particle);
+            }
+        }
+
+        function animateParticle(particle) {
+            const duration = Math.random() * 3000 + 2000; // 2-5 seconds
+            const targetX = Math.random() * 200 - 100; // -100 to 100
+            const targetY = Math.random() * 200 - 100; // -100 to 100
+
+            particle.animate([
+                { transform: 'translate(0, 0)' },
+                { transform: `translate(${targetX}px, ${targetY}px)` }
+            ], {
+                duration: duration,
+                iterations: Infinity,
+                direction: 'alternate',
+                easing: 'ease-in-out'
+            });
+        }
+
+        // Initialize particles on load
+        document.addEventListener('DOMContentLoaded', createParticles);
+
+        // Add hover effects for buttons
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('mouseover', () => {
+                button.style.transform = 'translateY(-3px)';
+                button.style.boxShadow = '0 5px 15px rgba(78, 204, 163, 0.3)';
+            });
+
+            button.addEventListener('mouseout', () => {
+                button.style.transform = 'translateY(0)';
+                button.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

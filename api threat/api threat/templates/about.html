@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Our Network api Security Prediction</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #1a1a2e);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: #4ecca3;
+            text-shadow: 0 0 10px rgba(78, 204, 163, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #eeeeee;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            background: #4ecca3;
+            color: #1a1a2e;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(78, 204, 163, 0.3);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s ease;
+        }
+
+        .section h2 {
+            color: #4ecca3;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section h3 {
+            color: #4ecca3;
+            margin: 25px 0 15px;
+            font-size: 1.5rem;
+        }
+
+        .section p {
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 30px;
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature i {
+            font-size: 2.5rem;
+            color: #4ecca3;
+            margin-bottom: 20px;
+        }
+
+        .feature h3 {
+            margin-bottom: 15px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 50px;
+            margin-top: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #4ecca3;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -38px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #4ecca3;
+            border: 3px solid #1a1a2e;
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: #4ecca3;
+            margin-bottom: 10px;
+        }
+
+        .team-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .team-member {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+
+        .team-member img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 3px solid #4ecca3;
+        }
+
+        .team-member h3 {
+            margin-bottom: 5px;
+        }
+
+        .team-member p.position {
+            color: #aaaaaa;
+            margin-bottom: 15px;
+        }
+
+        .team-member .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .team-member .social-links a {
+            color: #fff;
+            transition: color 0.3s;
+        }
+
+        .team-member .social-links a:hover {
+            color: #4ecca3;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4ecca3;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: #4ecca3;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .nav a:hover {
+            background: rgba(78, 204, 163, 0.2);
+        }
+
+        .nav a.active {
+            background: #4ecca3;
+            color: #1a1a2e;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles"></div>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-shield-alt"></i> About Our Security Solutions</h1>
+            <p>Protecting digital assets with cutting-edge AI and machine learning technologies since 2015</p>
+            
+            <div class="nav">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <a href="about" class="active"><i class="fas fa-info-circle"></i> About</a>
+                <a href="register"><i class="fas fa-user-plus"></i> Register</a>
+                <a href="login"><i class="fas fa-sign-in-alt"></i> Login</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><i class="fas fa-building"></i> Company Overview</h2>
+            <p>Founded in 2015, CyberShield Analytics has emerged as a leader in predictive network security solutions. Our mission is to revolutionize cybersecurity through artificial intelligence, providing proactive protection against evolving digital threats.</p>
+            
+            <p>With headquarters in San Francisco and offices in London, Singapore, and Tokyo, we serve over 5,000 enterprise clients worldwide across finance, healthcare, government, and technology sectors.</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Threat Detection Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Security Monitoring</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">5000+</div>
+                    <div class="stat-label">Enterprise Clients</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50ms</div>
+                    <div class="stat-label">Average Response Time</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><i class="fas fa-cogs"></i> Our Technology</h2>
+            <p>Our proprietary security platform combines multiple layers of protection using advanced machine learning algorithms trained on petabytes of network data and threat intelligence.</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-brain"></i>
+                    <h3>Deep Learning Engine</h3>
+                    <p>Neural networks analyze traffic patterns in real-time, identifying anomalies with sub-millisecond latency. Our models are trained on over 10 million known attack vectors.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-project-diagram"></i>
+                    <h3>Behavioral Analysis</h3>
+                    <p>Continuous monitoring of network behavior establishes baselines and detects deviations that may indicate compromise, including zero-day threats.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-cloud"></i>
+                    <h3>Cloud-Based Protection</h3>
+                    <p>Distributed nodes across 15 global regions provide DDoS mitigation with automatic traffic rerouting and scrubbing capabilities.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-shield-virus"></i>
+                    <h3>Threat Intelligence</h3>
+                    <p>Integrated with 50+ threat feeds and our own honeypot network, updating defenses against emerging threats every 30 seconds.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-robot"></i>
+                    <h3>Automated Response</h3>
+                    <p>AI-driven incident response automatically contains threats while providing human-readable forensic reports.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-lock"></i>
+                    <h3>Encrypted Traffic Analysis</h3>
+                    <p>Patented technology inspects encrypted traffic without decryption, maintaining privacy while detecting threats.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><i class="fas fa-history"></i> Our Journey</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2015</div>
+                    <h3>Company Founded</h3>
+                    <p>Started as a research project at Stanford University's Cybersecurity Lab, focusing on machine learning for intrusion detection.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2017</div>
+                    <h3>First Commercial Product</h3>
+                    <p>Launched our initial enterprise firewall with basic predictive capabilities, securing our first Fortune 500 client.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2019</div>
+                    <h3>AI Platform Released</h3>
+                    <p>Introduced our full AI security suite with real-time threat prediction, winning the InfoSec Award for Innovation.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2021</div>
+                    <h3>Global Expansion</h3>
+                    <p>Opened international offices and achieved ISO 27001 certification for our security operations.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2023</div>
+                    <h3>Quantum Research Initiative</h3>
+                    <p>Began developing post-quantum cryptography solutions and quantum-resistant algorithms.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><i class="fas fa-users"></i> Leadership Team</h2>
+            <p>Our executive team brings together decades of experience in cybersecurity, artificial intelligence, and enterprise technology.</p>
+            
+            <div class="team-members">
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="CEO">
+                    <h3>Dr. Emily Zhang</h3>
+                    <p class="position">CEO & Co-Founder</p>
+                    <p>Former head of cybersecurity research at Stanford, PhD in Machine Learning</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="CTO">
+                    <h3>Michael Chen</h3>
+                    <p class="position">CTO & Co-Founder</p>
+                    <p>Architect of our AI engine, previously led security at a major cloud provider</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="CSO">
+                    <h3>Sarah Johnson</h3>
+                    <p class="position">Chief Security Officer</p>
+                    <p>20+ years in cybersecurity, former NSA cryptanalyst</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fas fa-globe"></i></a>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="VP Engineering">
+                    <h3>David Kim</h3>
+                    <p class="position">VP of Engineering</p>
+                    <p>Led scaling of our platform to handle 10M+ requests per second</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2><i class="fas fa-award"></i> Certifications & Awards</h2>
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>ISO 27001 Certified</h3>
+                    <p>International standard for information security management systems</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-medal"></i>
+                    <h3>InfoSec Award Winner</h3>
+                    <p>Recognized as most innovative cybersecurity solution 3 years running</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-lock"></i>
+                    <h3>FIPS 140-2 Validated</h3>
+                    <p>Meeting rigorous US government security standards</p>
+                </div>
+            </div>
+            
+            <a href="register" class="btn btn-primary">
+                <i class="fas fa-user-plus"></i>
+                Get Protected Today
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles effect
+        function createParticles() {
+            const particlesContainer = document.querySelector('.particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size between 2 and 6 pixels
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                particlesContainer.appendChild(particle);
+                
+                // Animate particle
+                animateParticle(particle);
+            }
+        }
+
+        function animateParticle(particle) {
+            const duration = Math.random() * 3000 + 2000; // 2-5 seconds
+            const targetX = Math.random() * 200 - 100; // -100 to 100
+            const targetY = Math.random() * 200 - 100; // -100 to 100
+
+            particle.animate([
+                { transform: 'translate(0, 0)' },
+                { transform: `translate(${targetX}px, ${targetY}px)` }
+            ], {
+                duration: duration,
+                iterations: Infinity,
+                direction: 'alternate',
+                easing: 'ease-in-out'
+            });
+        }
+
+        // Initialize particles on load
+        document.addEventListener('DOMContentLoaded', createParticles);
+
+        // Add hover effects for buttons
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('mouseover', () => {
+                button.style.transform = 'translateY(-3px)';
+                button.style.boxShadow = '0 5px 15px rgba(78, 204, 163, 0.3)';
+            });
+
+            button.addEventListener('mouseout', () => {
+                button.style.transform = 'translateY(0)';
+                button.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

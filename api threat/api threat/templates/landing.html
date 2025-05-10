@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API SECURITY PREDICTION </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #1a1a2e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #4ecca3;
+            text-shadow: 0 0 10px rgba(78, 204, 163, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #eeeeee;
+            opacity: 0.9;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: #4ecca3;
+            color: #1a1a2e;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-about {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            backdrop-filter: blur(10px);
+            border: 1px solid #4ecca3;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(78, 204, 163, 0.3);
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 50px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1s ease;
+        }
+
+        .info-card h2 {
+            color: #4ecca3;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .info-card p {
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .attack-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .attack-type {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+
+        .attack-type:hover {
+            transform: translateY(-5px);
+        }
+
+        .attack-type i {
+            font-size: 2rem;
+            color: #4ecca3;
+            margin-bottom: 15px;
+        }
+
+        .about-section {
+            margin-top: 50px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .about-section h2 {
+            color: #4ecca3;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .feature i {
+            color: #4ecca3;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .team-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .team-member {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #4ecca3;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: #4ecca3;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles"></div>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-shield-alt"></i> Network Security Prediction</h1>
+            <p>Advanced AI-powered protection for your network infrastructure</p>
+        </div>
+
+        <div class="btn-container">
+            <a href="register" class="btn btn-primary">
+                <i class="fas fa-user-plus"></i>
+                Register
+            </a>
+            <a href="login" class="btn btn-secondary">
+                <i class="fas fa-sign-in-alt"></i>
+                Login
+            </a>
+            <a href="about" class="btn btn-about">
+                <i class="fas fa-info-circle"></i>
+                About Us
+            </a>
+        </div>
+
+        <div class="info-card">
+            <h2><i class="fas fa-exclamation-triangle"></i> Understanding DDoS Attacks</h2>
+            <p>A Distributed Denial-of-Service (DDoS) attack is a malicious attempt to disrupt the normal traffic of a targeted server, service, or network by overwhelming the target with a flood of Internet traffic.</p>
+            
+            <div class="attack-types">
+                <div class="attack-type">
+                    <i class="fas fa-network-wired"></i>
+                    <h3>Volume-Based</h3>
+                    <p>Saturates bandwidth with massive traffic</p>
+                </div>
+                <div class="attack-type">
+                    <i class="fas fa-server"></i>
+                    <h3>Protocol</h3>
+                    <p>Exploits server resource limitations</p>
+                </div>
+                <div class="attack-type">
+                    <i class="fas fa-bug"></i>
+                    <h3>Application Layer</h3>
+                    <p>Targets application vulnerabilities</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section" id="about">
+            <h2><i class="fas fa-info-circle"></i> About Our Security System</h2>
+            <p>Our Network Security Prediction system leverages cutting-edge artificial intelligence and machine learning algorithms to detect and prevent cyber threats before they impact your infrastructure. With real-time monitoring and predictive analytics, we provide unparalleled protection for your network.</p>
+            
+            <div class="about-features">
+                <div class="feature">
+                    <i class="fas fa-brain"></i>
+                    <h3>AI-Powered Detection</h3>
+                    <p>Our system learns from millions of attack patterns to identify threats with 99.8% accuracy.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Real-Time Protection</h3>
+                    <p>Instant threat detection and mitigation with response times under 50ms.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Predictive Analytics</h3>
+                    <p>Anticipate attacks before they happen with our advanced prediction models.</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 40px; color: #4ecca3; text-align: center;">Our Team</h3>
+            <div class="team-members">
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Security Expert">
+                    <h4>Dr. Sarah Chen</h4>
+                    <p>Chief Security Officer</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="AI Specialist">
+                    <h4>Mark Johnson</h4>
+                    <p>AI Research Lead</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Network Engineer">
+                    <h4>Lisa Rodriguez</h4>
+                    <p>Network Architect</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles effect
+        function createParticles() {
+            const particlesContainer = document.querySelector('.particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size between 2 and 6 pixels
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                particlesContainer.appendChild(particle);
+                
+                // Animate particle
+                animateParticle(particle);
+            }
+        }
+
+        function animateParticle(particle) {
+            const duration = Math.random() * 3000 + 2000; // 2-5 seconds
+            const targetX = Math.random() * 200 - 100; // -100 to 100
+            const targetY = Math.random() * 200 - 100; // -100 to 100
+
+            particle.animate([
+                { transform: 'translate(0, 0)' },
+                { transform: `translate(${targetX}px, ${targetY}px)` }
+            ], {
+                duration: duration,
+                iterations: Infinity,
+                direction: 'alternate',
+                easing: 'ease-in-out'
+            });
+        }
+
+        // Initialize particles on load
+        document.addEventListener('DOMContentLoaded', createParticles);
+
+        // Add hover effects for buttons
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('mouseover', () => {
+                button.style.transform = 'translateY(-3px)';
+                button.style.boxShadow = '0 5px 15px rgba(78, 204, 163, 0.3)';
+            });
+
+            button.addEventListener('mouseout', () => {
+                button.style.transform = 'translateY(0)';
+                button.style.boxShadow = 'none';
+            });
+        });
+
+        // Smooth scroll to about section if URL has #about
+        if (window.location.hash === '#about') {
+            document.querySelector('#about').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>

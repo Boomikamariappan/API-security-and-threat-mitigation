@@ -1,0 +1,20 @@
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #4ecca3;
+    color: #1a1a2e;
+    text-decoration: none;
+    border-radius: 25px;
+}
+.button:hover {
+    background-color: #3ba587;
+}
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #fff;
+}
+nav a:hover {
+    background: rgba(78, 204, 163, 0.3);
+}
